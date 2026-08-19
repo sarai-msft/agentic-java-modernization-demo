@@ -1,38 +1,28 @@
 # Agentic Java Modernization Demo
 
-Demonstrates agent-assisted Java 8 → Java 17 modernization with evidence gates.
+Demonstrates AI-driven Java 8 → Java 17 modernization using GitHub Copilot as an A2D (Acquire-to-Decommission) Modernization Agent.
 
-## Story
+## What This Is
 
-`OrdersService` directly calls `BillingService`. The modernization patch:
-1. Updates Maven compiler target from Java 8 to Java 17
-2. Introduces a `BillingClient` interface as a module seam
-3. Refactors `OrdersService` to depend on the interface
+A Java 8 monolith where `OrdersService` directly instantiates `BillingService` (tight coupling). GitHub Copilot, guided by `.github/copilot-instructions.md`, scans the repo, assesses risk, proposes changes, applies them, validates, and creates a draft PR — all autonomously with human approval gates.
 
-## Branches
+## How It Works
 
-- `main` — Java 8 baseline with direct Orders → Billing coupling
-- `modernization/java17-billing-seam` — Scoped patch with Java 17 target and BillingClient seam
+1. Open this repo in VS Code with GitHub Copilot
+2. Ask Copilot: *"What are your instructions for this repo?"*
+3. Ask Copilot: *"A business request has arrived: Upgrade the Customer Ordering Service. Assess this repository."*
+4. Copilot runs the 7-stage A2D lifecycle (Intake → Readiness → Governance → Propose → Apply → Validate → Approve)
 
-## Running
+## Running the Monolith
 
 ```bash
-# Inspect the repository
-bash scripts/inspect.sh
-
-# Run validation gates (from modernization branch)
-bash scripts/run-gates.sh
-
-# Build container with SBOM (requires Docker Buildx)
-bash scripts/build-image.sh
+.\mvnw.cmd clean package -q
+java -cp target\classes com.demo.Main
 ```
 
-## Evidence
+## Structure
 
-All validation evidence is collected in the `evidence/` folder:
-- `build-and-test.log` — Maven compile and test output
-- `dependency-tree.log` — Full dependency inventory
-- `diff-files.log` — Changed files allowlist
-- `sca-report.md` — Security composition analysis
-- `pr-body.md` — Draft pull request body
-- `trace.md` — Decision trace
+- `.github/copilot-instructions.md` — The A2D agent instructions
+- `src/` — Java 8 monolith source (3 files + 1 test)
+- `scripts/fallback/` — Echo-based fallback scripts for offline demo
+- `scripts/run-gates.cmd` — Maven test gate runner
