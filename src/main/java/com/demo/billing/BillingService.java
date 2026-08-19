@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Direct billing service - tightly coupled to OrdersService.
  */
-public class BillingService {
+public class BillingService implements BillingClient {
 
     public String charge(String orderId, BigDecimal amount) {
         // Simulate billing logic
