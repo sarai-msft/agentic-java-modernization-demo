@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 public class Main {
     public static void main(String[] args) {
         System.out.println("=== Orders Billing Monolith ===");
-        System.out.println("Runtime: Java " + System.getProperty("java.version"));
         System.out.println();
 
         OrdersService orders = new OrdersService();
