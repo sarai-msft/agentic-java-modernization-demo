@@ -1,6 +1,6 @@
 package com.demo.orders;
 
-import com.demo.billing.BillingService;
+import com.demo.billing.BillingClient;
 import java.math.BigDecimal;
 
 /**
@@ -8,7 +8,11 @@ import java.math.BigDecimal;
  */
 public class OrdersService {
 
-    private final BillingService billingService = new BillingService();
+    private final BillingClient billingService;
+
+    public OrdersService(BillingClient billingService) {
+        this.billingService = billingService;
+    }
 
     public String placeOrder(String orderId, BigDecimal amount) {
         System.out.println("OrdersService: placing order " + orderId + " for " + amount);

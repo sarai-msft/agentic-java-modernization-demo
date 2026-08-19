@@ -9,7 +9,7 @@ public class OrdersBillingContractTest {
 
     @Test
     public void testPlaceOrderChargesBilling() {
-        OrdersService orders = new OrdersService();
+        OrdersService orders = new OrdersService(new BillingService());
         String txn = orders.placeOrder("ORD-001", new BigDecimal("99.99"));
         assertNotNull("Transaction ID should not be null", txn);
         assertTrue("Transaction ID should start with TXN-", txn.startsWith("TXN-"));
