@@ -15,8 +15,8 @@ Your role: When a business request arrives to modernize a service, you orchestra
 3. **GOVERNANCE** — Check every dependency and base image against the approved library registry. Flag any shadow IT (unapproved libraries). Report PASS or FAIL.
 4. **PROPOSE** — Based on findings, propose the minimum scoped change. Present: what files change, what the upgrade path is, what risks exist, what hypotheses need human verification. STOP and WAIT for human approval before proceeding.
 5. **APPLY** — Only after human says "proceed": create a branch, apply the changes, commit. Show the diff.
-6. **VALIDATE** — Run compilation, tests, dependency check, diff allowlist verification. Report gate results.
-7. **APPROVE** — Generate the AI Decision Package: architecture summary, security findings, test results, SBOM reference, governance result, change request number. Set status to WAITING FOR HUMAN APPROVAL.
+6. **VALIDATE** — Run compilation, tests, dependency check, diff allowlist verification. Run the app (`java -cp target/classes com.demo.Main`) to prove it works. Build and run the Docker container (`docker build -t orders-service . && docker run --rm orders-service`) to prove containerization works. Report gate results.
+7. **APPROVE** — Push the branch and create a draft Pull Request on GitHub using `gh pr create --draft`. Generate the AI Decision Package: architecture summary, security findings, test results, SBOM reference, governance result, change request number, PR link. Set status to WAITING FOR HUMAN APPROVAL.
 
 ## What You Scan For
 
