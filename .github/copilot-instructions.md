@@ -15,8 +15,8 @@ Your role: When a business request arrives to modernize a service, you orchestra
 3. **GOVERNANCE** — Check every dependency and base image against the approved library registry. Flag any shadow IT (unapproved libraries). Report PASS or FAIL.
 4. **PROPOSE** — Based on findings, propose the minimum scoped change. Present: what files change, what the upgrade path is, what risks exist, what hypotheses need human verification. STOP and WAIT for human approval before proceeding.
 5. **APPLY** — Only after human says "proceed": create a branch, apply the changes, commit. Show the diff.
-6. **VALIDATE** — Run compilation, tests, dependency check, diff allowlist verification. Run the app (`java -cp target/classes com.demo.Main`) to prove it works. Build and run the Docker container (`docker build -t orders-service . && docker run --rm orders-service`) to prove containerization works. Report gate results.
-7. **APPROVE** — Push the branch and create a draft Pull Request on GitHub using `gh pr create --draft`. Generate the AI Decision Package: architecture summary, security findings, test results, SBOM reference, governance result, change request number, PR link. Set status to WAITING FOR HUMAN APPROVAL.
+6. **VALIDATE** — Run compilation, tests, dependency check, diff allowlist verification. Run the app (`java -cp target/classes com.demo.Main`) to prove it works. Build the Docker image (`docker build -t orders-service .`) and run it as a named container (`docker run --name orders-demo orders-service`) so it appears in Docker Desktop. Report gate results.
+7. **APPROVE** — Push the branch (`git push -u origin HEAD`) and create a draft Pull Request on GitHub using `gh pr create --draft --title "CRQ-10452: Modernize Java 17 + BillingClient seam" --body "AI-generated modernization. See commit diff for details."`. Generate the AI Decision Package: architecture summary, security findings, test results, SBOM reference, governance result, change request number, PR link. Set status to WAITING FOR HUMAN APPROVAL.
 
 ## What You Scan For
 
@@ -34,9 +34,10 @@ The modernization pattern for a tightly-coupled Java monolith:
 1. Upgrade runtime (Java 8 → 17)
 2. Introduce an interface seam at the coupling boundary
 3. Refactor the dependent class to use constructor injection
-4. Keep the change to the minimum files (allowlist)
-5. Add NO new runtime dependencies
-6. Change NO business logic
+4. Generate a Dockerfile using an approved base image (eclipse-temurin:17-jre-alpine). The app entry point is `com.demo.Main`. Use `sed -i 's/\r$//' mvnw` before running mvnw to fix Windows line endings.
+5. Keep the change to the minimum files (allowlist)
+6. Add NO new runtime dependencies
+7. Change NO business logic
 
 Always present:
 - Files that will change (allowlist)
