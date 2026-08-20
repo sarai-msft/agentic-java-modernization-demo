@@ -1,5 +1,6 @@
 package com.demo;
 
+import com.demo.billing.BillingService;
 import com.demo.orders.OrdersService;
 import java.math.BigDecimal;
 
@@ -8,7 +9,7 @@ public class Main {
         System.out.println("=== Orders Billing Monolith ===");
         System.out.println();
 
-        OrdersService orders = new OrdersService();
+        OrdersService orders = new OrdersService(new BillingService());
         orders.placeOrder("ORD-1001", new BigDecimal("249.99"));
         orders.placeOrder("ORD-1002", new BigDecimal("89.50"));
 

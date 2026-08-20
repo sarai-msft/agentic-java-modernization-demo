@@ -3,9 +3,9 @@ package com.demo.billing;
 import java.math.BigDecimal;
 
 /**
- * Direct billing service - tightly coupled to OrdersService.
+ * Direct billing service - implements BillingClient interface.
  */
-public class BillingService {
+public class BillingService implements BillingClient {
 
     public String charge(String orderId, BigDecimal amount) {
         // Simulate billing logic
