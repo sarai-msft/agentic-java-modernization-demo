@@ -5,8 +5,9 @@ import java.math.BigDecimal;
 /**
  * Direct billing service - tightly coupled to OrdersService.
  */
-public class BillingService {
+public class BillingService implements BillingClient {
 
+    @Override
     public String charge(String orderId, BigDecimal amount) {
         // Simulate billing logic
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
