@@ -1,19 +1,28 @@
 package com.demo.orders;
 
+import com.demo.billing.BillingClient;
 import com.demo.billing.BillingService;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
- * OrdersService directly calls BillingService - tight coupling.
+ * Coordinates order placement with billing.
  */
 public class OrdersService {
 
-    private final BillingService billingService = new BillingService();
+    private final BillingClient billingClient;
+
+    public OrdersService() {
+        this(new BillingService());
+    }
+
+    public OrdersService(BillingClient billingClient) {
+        this.billingClient = Objects.requireNonNull(billingClient, "billingClient");
+    }
 
     public String placeOrder(String orderId, BigDecimal amount) {
         System.out.println("OrdersService: placing order " + orderId + " for " + amount);
-        // Direct call to BillingService - tight coupling
-        String transactionId = billingService.charge(orderId, amount);
+        String transactionId = billingClient.charge(orderId, amount);
         System.out.println("OrdersService: order " + orderId + " confirmed with transaction " + transactionId);
         return transactionId;
     }

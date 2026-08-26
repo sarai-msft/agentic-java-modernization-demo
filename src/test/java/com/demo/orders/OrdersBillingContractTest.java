@@ -1,5 +1,6 @@
 package com.demo.orders;
 
+import com.demo.billing.BillingClient;
 import com.demo.billing.BillingService;
 import org.junit.Test;
 import java.math.BigDecimal;
@@ -13,6 +14,16 @@ public class OrdersBillingContractTest {
         String txn = orders.placeOrder("ORD-001", new BigDecimal("99.99"));
         assertNotNull("Transaction ID should not be null", txn);
         assertTrue("Transaction ID should start with TXN-", txn.startsWith("TXN-"));
+    }
+
+    @Test
+    public void testPlaceOrderUsesInjectedBillingClient() {
+        BillingClient billing = (orderId, amount) -> "FAKE-" + orderId + "-" + amount;
+        OrdersService orders = new OrdersService(billing);
+
+        String txn = orders.placeOrder("ORD-005", new BigDecimal("25.00"));
+
+        assertEquals("FAKE-ORD-005-25.00", txn);
     }
 
     @Test
